@@ -67,13 +67,13 @@
           </div>
         </div>
 
-        <div class="footer">
+        <div class="footer" style="margin-top: -30px;">
           <div class="btnfooter" id="docbtn">
             <button id="btnftr1">
               <img src="qr.png" alt="" class="qrbtn" />
               Предъявить документ
             </button>
-            <button id="btnftr2" class="share" style="margin-top: -100px;">
+            <button id="btnftr2" class="share">
               <img src="upload.png" alt="" class="uploadbtn" />
               Отправить документ
             </button>
@@ -86,46 +86,45 @@
       <ul class="rekvizit">
         <li>
           <span class="atritem">ФИО</span>
-          <input type="text" maxlength="32" spellcheck="false" class="rekitem" id="1" style="margin-right: 25px;"/>
+          <input type="text" maxlength="32" spellcheck="false" class="rekitem" id="1"/>
           <img src="copy.png" alt="" class="copy-icon" />
         </li>
         <li>
           <span class="atritem">ИИН</span>
-          <input type="text" maxlength="12" spellcheck="false" class="rekitem" id="2" style="margin-right: 25px;"/>
+          <input type="text" maxlength="12" class="rekitem" id="2"/>
           <img src="copy.png" alt="" class="copy-icon"  />
         </li>
         <li>
           <span class="atritem">Дата рождения</span>
-          <input type="text" maxlength="10" spellcheck="false" class="rekitem" id="3" style="margin-right: 25px;"/>
+          <input type="text" maxlength="10" class="rekitem" id="3"/>
           <img src="copy.png" alt="" class="copy-icon" />
         </li>
         <li>
           <span class="atritem">Номер документа</span>
-          <input type="text" maxlength="9" spellcheck="false" class="rekitem" id="4" style="margin-right: 25px;">
+          <input type="text" maxlength="9" class="rekitem" id="4"/>
           <img src="copy.png" alt="" class="copy-icon" />
         </li>
         <li>
           <span class="atritem">Дата выдачи</span>
-          <input type="text" maxlength="10" spellcheck="false" class="rekitem" id="5" style="margin-right: 25px;">
+          <input type="text" maxlength="10" class="rekitem" id="5"/>
           <img src="copy.png" alt="" class="copy-icon" />
         </li>
         <li>
           <span class="atritem">Срок действия</span>
-          <input type="text" maxlength="10" spellcheck="false" class="rekitem" id="6" style="margin-right: 25px;">
+          <input type="text" maxlength="10" class="rekitem" id="6"/>
           <img src="copy.png" alt="" class="copy-icon" />
         </li>
       </ul>
-
-        <div class="footer">
-          <div class="btnfooter" id="docbtn" style="margin-bottom: 150px; margin-top: -150px;">
-            <button id="btnftr2" class="share" style="margin-left: auto;">
-              <img src="upload.png" alt="" class="uploadbtn" />
-              Отправить реквизиты
-            </button>
-          </div>
+      <div class="footer">
+        <div class="btnfooter" id="docbtn">
+          <button id="btnftr2" class="share">
+            <img src="upload.png" alt="" class="uploadbtn" />
+            Отправить реквизиты
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -168,7 +167,6 @@
       tabBtn1.addEventListener("change", updateTabs);
       tabBtn2.addEventListener("change", updateTabs);
 
-      // запуск по умолчанию
       tabBtn1.checked = true;
       updateTabs();
 
@@ -182,6 +180,17 @@
           showImage(src);
         };
         reader.readAsDataURL(file);
+      });
+
+      // сохранить реквизиты в localStorage
+      const rekvizitInputs = document.querySelectorAll('.rekvizit input');
+      rekvizitInputs.forEach((input, index) => {
+        const saved = localStorage.getItem('rekvizit' + index);
+        if (saved) input.value = saved;
+
+        input.addEventListener('input', () => {
+          localStorage.setItem('rekvizit' + index, input.value);
+        });
       });
     });
   </script>

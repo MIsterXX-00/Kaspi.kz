@@ -260,7 +260,7 @@ h6 {
   background-color: #2b6bcc;
   color: #fff;
   border-radius: 10px;
-  margin-bottom: 42px;
+  margin-bottom: 12px;
 }
 
 .btnfooter #btnftr2 {
@@ -334,7 +334,7 @@ h6 {
 
 #preview img {
   max-width: 100%;
-  max-height: 60vh;
+  max-height: 64vh;
   border-radius: 12px;
   display: block;
   margin: 0 auto;

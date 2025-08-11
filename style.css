@@ -338,12 +338,9 @@ h6 {
   border-radius: 12px;
   display: block;
   margin: 0 auto;
-  #preview img {
   transition: transform 0.05s linear;
   touch-action: none;
   will-change: transform;
-}
-
 }
 
 

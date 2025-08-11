@@ -202,6 +202,7 @@ let startY = 0;
 let currentX = 0;
 let currentY = 0;
 let isPanning = false;
+let lastScaleChange = 1;
 
 preview.addEventListener("touchstart", function(e) {
   const img = preview.querySelector("img");
@@ -213,6 +214,7 @@ preview.addEventListener("touchstart", function(e) {
       e.touches[0].clientX - e.touches[1].clientX,
       e.touches[0].clientY - e.touches[1].clientY
     );
+    lastScaleChange = 1;
     isPanning = false;
   } else if (e.touches.length === 1 && currentScale > 1) {
     // Панорамирование
@@ -234,8 +236,13 @@ preview.addEventListener("touchmove", function(e) {
       e.touches[0].clientY - e.touches[1].clientY
     );
     const scaleChange = newDistance / startDistance;
-    const newScale = Math.min(Math.max(currentScale * scaleChange, 1), 5);
+    let newScale = currentScale * scaleChange;
+
+    // Не даем уменьшиться меньше 1
+    if (newScale < 1) newScale = 1;
+
     img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${newScale})`;
+    lastScaleChange = scaleChange;
   } else if (e.touches.length === 1 && isPanning) {
     // Перемещение
     currentX = e.touches[0].clientX - startX;
@@ -249,10 +256,10 @@ preview.addEventListener("touchend", function(e) {
   if (!img) return;
 
   if (e.touches.length < 2) {
-    // Сохраняем масштаб
+    // Фиксируем масштаб после пинча
     const style = window.getComputedStyle(img);
     const matrix = new WebKitCSSMatrix(style.transform);
-    currentScale = matrix.a;
+    currentScale = Math.max(matrix.a, 1); // минимум 1
   }
 });
 

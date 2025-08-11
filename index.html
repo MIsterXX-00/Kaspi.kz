@@ -195,31 +195,51 @@
       });
 
     });
-    let scale = 1;
-let originX = 0;
-let originY = 0;
+    let startDistance = 0;
+let currentScale = 1;
 
-preview.addEventListener("click", function(e) {
-  const img = preview.querySelector("img");
-  if (!img) return;
-
-  const rect = img.getBoundingClientRect();
-  const offsetX = e.clientX - rect.left;
-  const offsetY = e.clientY - rect.top;
-
-  // устанавливаем точку увеличения
-  originX = (offsetX / rect.width) * 100;
-  originY = (offsetY / rect.height) * 100;
-  img.style.transformOrigin = `${originX}% ${originY}%`;
-
-  // меняем масштаб
-  if (scale < 3) {
-    scale += 0.5;
-  } else {
-    scale = 1; // сброс
+preview.addEventListener("touchstart", function(e) {
+  if (e.touches.length === 2) {
+    // считаем начальное расстояние между пальцами
+    startDistance = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
   }
-  img.style.transform = `scale(${scale})`;
+}, { passive: false });
+
+preview.addEventListener("touchmove", function(e) {
+  if (e.touches.length === 2) {
+    e.preventDefault(); // чтобы страница не скроллилась
+    const img = preview.querySelector("img");
+    if (!img) return;
+
+    // текущее расстояние между пальцами
+    const newDistance = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+
+    // коэффициент изменения
+    const scaleChange = newDistance / startDistance;
+    const newScale = currentScale * scaleChange;
+
+    img.style.transform = `scale(${newScale})`;
+  }
+}, { passive: false });
+
+preview.addEventListener("touchend", function(e) {
+  if (e.touches.length < 2) {
+    // фиксируем масштаб после окончания жеста
+    const img = preview.querySelector("img");
+    if (img) {
+      const style = window.getComputedStyle(img);
+      const matrix = new WebKitCSSMatrix(style.transform);
+      currentScale = matrix.a; // текущий масштаб
+    }
+  }
 });
+
 
 
   </script>

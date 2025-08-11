@@ -197,49 +197,64 @@
     });
     let startDistance = 0;
 let currentScale = 1;
+let startX = 0;
+let startY = 0;
+let currentX = 0;
+let currentY = 0;
+let isPanning = false;
 
 preview.addEventListener("touchstart", function(e) {
+  const img = preview.querySelector("img");
+  if (!img) return;
+
   if (e.touches.length === 2) {
-    // считаем начальное расстояние между пальцами
+    // Пинч-зум
     startDistance = Math.hypot(
       e.touches[0].clientX - e.touches[1].clientX,
       e.touches[0].clientY - e.touches[1].clientY
     );
+    isPanning = false;
+  } else if (e.touches.length === 1 && currentScale > 1) {
+    // Панорамирование
+    isPanning = true;
+    startX = e.touches[0].clientX - currentX;
+    startY = e.touches[0].clientY - currentY;
   }
 }, { passive: false });
 
 preview.addEventListener("touchmove", function(e) {
-  if (e.touches.length === 2) {
-    e.preventDefault(); // чтобы страница не скроллилась
-    const img = preview.querySelector("img");
-    if (!img) return;
+  const img = preview.querySelector("img");
+  if (!img) return;
+  e.preventDefault();
 
-    // текущее расстояние между пальцами
+  if (e.touches.length === 2) {
+    // Пинч
     const newDistance = Math.hypot(
       e.touches[0].clientX - e.touches[1].clientX,
       e.touches[0].clientY - e.touches[1].clientY
     );
-
-    // коэффициент изменения
     const scaleChange = newDistance / startDistance;
-    const newScale = currentScale * scaleChange;
-
-    img.style.transform = `scale(${newScale})`;
+    const newScale = Math.min(Math.max(currentScale * scaleChange, 1), 5);
+    img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${newScale})`;
+  } else if (e.touches.length === 1 && isPanning) {
+    // Перемещение
+    currentX = e.touches[0].clientX - startX;
+    currentY = e.touches[0].clientY - startY;
+    img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
   }
 }, { passive: false });
 
 preview.addEventListener("touchend", function(e) {
+  const img = preview.querySelector("img");
+  if (!img) return;
+
   if (e.touches.length < 2) {
-    // фиксируем масштаб после окончания жеста
-    const img = preview.querySelector("img");
-    if (img) {
-      const style = window.getComputedStyle(img);
-      const matrix = new WebKitCSSMatrix(style.transform);
-      currentScale = matrix.a; // текущий масштаб
-    }
+    // Сохраняем масштаб
+    const style = window.getComputedStyle(img);
+    const matrix = new WebKitCSSMatrix(style.transform);
+    currentScale = matrix.a;
   }
 });
-
 
 
   </script>

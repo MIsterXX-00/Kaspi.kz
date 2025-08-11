@@ -338,7 +338,11 @@ h6 {
   border-radius: 12px;
   display: block;
   margin: 0 auto;
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
 }
+
+
 
 #preview {
   display: flex;

@@ -195,6 +195,33 @@
       });
 
     });
+    let scale = 1;
+let originX = 0;
+let originY = 0;
+
+preview.addEventListener("click", function(e) {
+  const img = preview.querySelector("img");
+  if (!img) return;
+
+  const rect = img.getBoundingClientRect();
+  const offsetX = e.clientX - rect.left;
+  const offsetY = e.clientY - rect.top;
+
+  // устанавливаем точку увеличения
+  originX = (offsetX / rect.width) * 100;
+  originY = (offsetY / rect.height) * 100;
+  img.style.transformOrigin = `${originX}% ${originY}%`;
+
+  // меняем масштаб
+  if (scale < 3) {
+    scale += 0.5;
+  } else {
+    scale = 1; // сброс
+  }
+  img.style.transform = `scale(${scale})`;
+});
+
+
   </script>
 </body>
 </html>

@@ -370,39 +370,38 @@ h6 {
   font-family: inherit;
 }
 
-/* фон полностью прозрачный */
+/* фон прозрачный */
 .qr-backdrop {
   position: absolute;
   inset: 0;
-  background: transparent; /* убрали затемнение и размытие */
+  background: transparent;
 }
 
 .qr-sheet {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
-  bottom: 40px; /* отступ снизу */
-  width: calc(100% - 20px);
+  transform: translate(-50%, 100%); /* спрятана ниже экрана */
+  bottom: 0;
+  width: 100%;
   max-width: 480px;
   background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
   overflow: hidden;
   padding: 18px;
-  text-align: left; /* заголовок слева */
+  text-align: left;
   -webkit-user-select: none;
+  transition: transform 0.3s ease; /* анимация выезда */
 }
 
-/* Крупнее на телефонах и занимает половину экрана */
+/* Открытое состояние — выезжает вверх */
+.qr-overlay.open .qr-sheet {
+  transform: translate(-50%, 0);
+}
+
 @media (max-width: 480px) {
   .qr-sheet {
     height: 50vh; /* половина экрана */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: calc(100% - 12px);
-    bottom: 40px; /* отступ снизу */
-    border-radius: 16px;
     padding: 20px;
   }
 }
@@ -435,7 +434,7 @@ h6 {
 .qr-instruction {
   color: #666;
   font-size: 15px;
-  margin: 10px 0 14px;
+  margin: 24px 0 17px;
   text-align: center;
 }
 
@@ -446,8 +445,8 @@ h6 {
 }
 
 .qr-image {
-  width: 220px; /* увеличенный QR */
-  height: 220px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
   background: #fff;
   border-radius: 8px;
@@ -468,11 +467,13 @@ h6 {
   letter-spacing: 3px;
   color: black;
   text-align: center;
+  margin-bottom: 40px;
 }
 
 .qr-overlay.open {
   display: block;
 }
+
 
 
 

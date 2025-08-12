@@ -370,9 +370,31 @@ preview.addEventListener("touchend", function(e) {
     }
   });
 })();
-document.getElementById('btnftr2').addEventListener('click', () => {
-  window.location.href = 'passport.jpg'; // путь к фото паспорта
+document.getElementById('sendDocBtn').addEventListener('click', async () => {
+  const fileUrl = 'passport.jpg'; // твой готовый файл
+
+  // Загружаем файл
+  const response = await fetch(fileUrl);
+  const blob = await response.blob();
+  const file = new File([blob], 'passport.jpg', { type: blob.type });
+
+  // Проверка поддержки Web Share API с файлами
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        title: 'Документ',
+        text: 'Отправляю паспорт',
+        files: [file]
+      });
+      console.log('Файл отправлен');
+    } catch (err) {
+      console.error('Отправка отменена', err);
+    }
+  } else {
+    alert('Поделиться файлом невозможно в этом браузере');
+  }
 });
+
 
   </script>
 </body>

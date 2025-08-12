@@ -370,30 +370,26 @@ preview.addEventListener("touchend", function(e) {
     }
   });
 })();
-document.getElementById('sendDocBtn').addEventListener('click', async () => {
-  const fileUrl = 'passport.jpg'; // твой готовый файл
 
-  // Загружаем файл
-  const response = await fetch(fileUrl);
-  const blob = await response.blob();
-  const file = new File([blob], 'passport.jpg', { type: blob.type });
 
-  // Проверка поддержки Web Share API с файлами
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+
+document.getElementById("btnftr2").addEventListener("click", async () => {
+  if (navigator.share) {
     try {
       await navigator.share({
-        title: 'Документ',
-        text: 'Отправляю паспорт',
-        files: [file]
+        title: "Мой сайт",
+        text: "Посмотри это!",
+        url: window.location.href
       });
-      console.log('Файл отправлен');
+      console.log("Успешно поделились");
     } catch (err) {
-      console.error('Отправка отменена', err);
+      console.log("Ошибка или отмена", err);
     }
   } else {
-    alert('Поделиться файлом невозможно в этом браузере');
+    alert("Ваш браузер не поддерживает системное меню поделиться");
   }
 });
+
 
 
   </script>

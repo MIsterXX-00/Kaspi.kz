@@ -36,6 +36,70 @@
     }
   </style>
 </head>
+<!-- START: modal for QR -->
+<div id="qrOverlay" class="qr-overlay" aria-hidden="true">
+  <div class="qr-backdrop" id="qrBackdrop"></div>
+
+  <div class="qr-sheet" role="dialog" aria-modal="true" aria-label="Удостоверение личности">
+    <button class="qr-close" id="qrClose" aria-label="Закрыть">&times;</button>
+
+    <div class="qr-sheet-header">
+      <h2>Удостоверение личности</h2>
+    </div>
+
+    <div class="qr-sheet-body">
+      <p class="qr-instruction">Покажите QR-код сотруднику</p>
+
+      <div class="qr-image-wrap">
+        <img src="https://qci.qr-code.click/uploads/qr_codes/98Heo8.svg?v=1754986674" alt="QR-код" class="qr-image">
+      </div>
+
+      <p class="qr-or">или скажите код</p>
+      <p class="qr-code">080824</p>
+    </div>
+  </div>
+</div>
+<!-- END: modal for QR -->
+
+<script>
+(function(){
+  const openBtn = document.querySelector('#btnftr1');
+  const overlay = document.getElementById('qrOverlay');
+  const closeBtn = document.getElementById('qrClose');
+  const backdrop = document.getElementById('qrBackdrop');
+
+  if (!openBtn || !overlay) return;
+
+  function openModal() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    openModal();
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeModal();
+    }
+  });
+})();
+</script>
+
 <body>
   <div class="container">
     <div class="header">
@@ -262,6 +326,49 @@ preview.addEventListener("touchend", function(e) {
     currentScale = Math.max(matrix.a, 1); // минимум 1
   }
 });
+
+// QR modal open/close
+(function(){
+  const openBtn = document.querySelector('#btnftr1');
+  const overlay = document.getElementById('qrOverlay');
+  const closeBtn = document.getElementById('qrClose');
+  const backdrop = document.getElementById('qrBackdrop');
+
+  if (!openBtn || !overlay) return;
+
+  function openModal() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    // блокируем прокрутку страницы когда открыт модал
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    openModal();
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+
+  // клик по области вне .qr-sheet также закрывает: делаем делегирование
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeModal();
+  });
+
+  // Esc закрывает
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeModal();
+    }
+  });
+})();
 
 
   </script>

@@ -360,4 +360,103 @@ h6 {
   display: block;
 }
 
+/* --- QR modal / bottom sheet --- */
+.qr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+}
+.qr-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+}
+.qr-sheet {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  width: calc(100% - 28px);
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+  padding: 18px 18px 28px;
+  text-align: left; /* текст слева */
+  -webkit-user-select: none;
+}
+.qr-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  line-height: 1;
+  color: #9b9b9b;
+  cursor: pointer;
+}
+
+
+.qr-sheet-header h2 {
+  margin: 6px 0 10px;
+  font-size: 16px;
+  color: #444;
+  font-weight: 600;
+}
+.qr-instruction {
+  color: #666;
+  font-size: 14px;
+  margin: 8px 0 12px;
+  text-align: center;
+}
+.qr-image-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 6px 0 12px;
+}
+.qr-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+.qr-or {
+  margin-top: 8px;
+  color: #999;
+  font-size: 13px;
+  text-align: center;
+}
+.qr-code {
+  margin-top: 6px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: black;
+  text-align: center;
+}
+.qr-overlay.open {
+  display: block;
+}
+@media (max-width: 420px) {
+  .qr-sheet {
+    width: calc(100% - 16px);
+    bottom: 12px;
+    border-radius: 14px;
+    padding: 14px 14px 20px;
+  }
+  .qr-image { width: 150px; height: 150px; }
+  .qr-code { font-size: 24px; }
+}
+
+
 

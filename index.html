@@ -371,27 +371,24 @@ preview.addEventListener("touchend", function(e) {
   });
 })();
 
-document.getElementById("btnftr2").addEventListener("click", async () => {
-  if (navigator.canShare && navigator.canShare({ files: [] })) {
-    // Загружаем файл с сервера (или из вашего кода)
-    const response = await fetch("photo.jpg"); // путь к вашему фото
-    const blob = await response.blob();
-    const file = new File([blob], "photo.jpg", { type: blob.type });
-
+document.getElementById("shareBtn").addEventListener("click", async () => {
+  if (navigator.share) {
     try {
       await navigator.share({
-        files: [file],
-        title: "Фото",
-        text: "Смотри это фото"
+        title: "Мой сайт",
+        text: "Посмотри это!",
+        url: window.location.href
       });
-      console.log("Фото отправлено");
+      console.log("Успешно поделились");
     } catch (err) {
       console.log("Ошибка или отмена", err);
     }
   } else {
-    alert("Ваш браузер не поддерживает отправку файлов через 'Поделиться'");
+    alert("Ваш браузер не поддерживает системное меню поделиться");
   }
 });
+
+
   </script>
 </body>
 </html>
